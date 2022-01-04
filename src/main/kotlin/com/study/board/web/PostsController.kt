@@ -1,9 +1,9 @@
 package com.study.board.web
 
+import com.study.board.domain.PostsEntity
 import com.study.board.service.PostsService
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import com.study.board.web.dto.PostsParam
+import org.springframework.web.bind.annotation.*
 
 @RequestMapping("/v1/posts")
 @RestController
@@ -11,7 +11,10 @@ class PostsController(
         private val postsService: PostsService
 ) {
 
-    @GetMapping
-    fun findQuestion(): String = postsService.findPosts()
+    @PostMapping
+    fun savePosts(@RequestBody postParamSaveReq: PostsParam.SaveReq): PostsEntity = postsService.savePosts(postParamSaveReq)
+
+    @GetMapping("/{seq}")
+    fun findPosts(@PathVariable seq: Long): PostsParam.FindRes= postsService.findPosts(seq)
 
 }
