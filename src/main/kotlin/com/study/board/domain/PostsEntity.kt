@@ -3,8 +3,8 @@ package com.study.board.domain
 import javax.persistence.*
 
 @Entity
-@Table(name = "question")
-class QuestionEntity(author: String, password: String, title: String, content: String) {
+@Table(name = "posts")
+class PostsEntity(author: String, password: String, title: String, content: String) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var seq: Long? = null

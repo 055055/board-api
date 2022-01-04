@@ -1,17 +1,17 @@
 package com.study.board.web
 
-import com.study.board.service.BoardService
+import com.study.board.service.PostsService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@RequestMapping("/v1/board")
+@RequestMapping("/v1/posts")
 @RestController
-class BoardController(
-        private val boardService: BoardService
+class PostsController(
+        private val postsService: PostsService
 ) {
 
     @GetMapping
-    fun findQuestion(): String = boardService.findQuestion()
+    fun findQuestion(): String = postsService.findPosts()
 
 }
