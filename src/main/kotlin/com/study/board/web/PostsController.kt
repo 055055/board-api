@@ -14,7 +14,10 @@ class PostsController(
     @PostMapping
     fun savePosts(@RequestBody postParamSaveReq: PostsParam.SaveReq): PostsEntity = postsService.savePosts(postParamSaveReq)
 
+    @PatchMapping("/{seq}")
+    fun updatePosts(@PathVariable seq: Long, @RequestBody postParamUpdateReq: PostsParam.UpdateReq): PostsEntity = postsService.updatePosts(postParamUpdateReq, seq)
+
     @GetMapping("/{seq}")
-    fun findPosts(@PathVariable seq: Long): PostsParam.FindRes= postsService.findPosts(seq)
+    fun findPosts(@PathVariable seq: Long): PostsParam.FindRes = postsService.findPosts(seq)
 
 }

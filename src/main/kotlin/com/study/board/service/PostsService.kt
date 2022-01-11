@@ -5,7 +5,7 @@ import com.study.board.web.dto.PostsParam
 
 interface PostsService {
     fun savePosts(postsParamSaveReq: PostsParam.SaveReq):PostsEntity
-    fun updatePosts():String
+    fun updatePosts(postParamUpdateReq: PostsParam.UpdateReq, seq: Long):PostsEntity
     fun deletePosts():String
     fun findPosts(seq: Long):PostsParam.FindRes
 }

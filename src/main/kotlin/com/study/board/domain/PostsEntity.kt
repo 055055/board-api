@@ -12,4 +12,11 @@ class PostsEntity(author: String, password: String, title: String, content: Stri
     var password: String = password
     var title: String = title
     var content: String = content
+
+    fun update(author: String, password: String, title: String, content: String) {
+       this.author = author
+       this.password = password
+       this.title = title
+       this.content = content
+    }
 }
