@@ -17,7 +17,11 @@ class PostsController(
     @PatchMapping("/{seq}")
     fun updatePosts(@PathVariable seq: Long, @RequestBody postParamUpdateReq: PostsParam.UpdateReq): PostsEntity = postsService.updatePosts(postParamUpdateReq, seq)
 
+    @DeleteMapping("/{seq}")
+    fun deletePosts(@PathVariable seq: Long, @RequestBody postParamDeleteReq: PostsParam.DeleteReq){
+        postsService.deletePosts(postParamDeleteReq, seq)
+    }
+
     @GetMapping("/{seq}")
     fun findPosts(@PathVariable seq: Long): PostsParam.FindRes = postsService.findPosts(seq)
-
 }

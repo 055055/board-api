@@ -18,8 +18,10 @@ class PostsServiceImpl(private val postsRepository: PostsRepository) : PostsServ
         return postsEntity
     }
 
-    override fun deletePosts(): String {
-        TODO("Not yet implemented")
+    @Transactional
+    override fun deletePosts(postParamDeleteReq: PostsParam.DeleteReq, seq: Long) {
+        val postsEntity = postsRepository.findById(seq).orElseThrow { IllegalAccessException("not found") }
+        postsRepository.delete(postsEntity)
     }
 
     @Transactional(readOnly = true)
