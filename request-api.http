@@ -1,0 +1,33 @@
+###
+POST http://localhost:8080/v1/posts
+Content-Type: application/json
+
+{
+  "author": "test author",
+  "password": "1234",
+  "title": "게시판인가요?",
+  "content": "이건 내용인가요?"
+}
+
+###
+GET http://localhost:8080/v1/posts/2
+
+###
+DELETE http://localhost:8080/v1/posts/1
+Content-Type: application/json
+
+{
+  "author": "test author",
+  "password": "1234"
+}
+
+###
+PATCH http://localhost:8080/v1/posts/2
+Content-Type: application/json
+
+{
+  "author": "test author2",
+  "password": "456",
+  "title": "게시판인가요?2",
+  "content": "이건 내용인가요?2"
+}

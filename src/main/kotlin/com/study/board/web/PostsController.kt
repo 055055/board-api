@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/v1/posts")
 @RestController
 class PostsController(
-        private val postsService: PostsService
+    private val postsService: PostsService
 ) {
 
     @PostMapping
@@ -18,7 +18,7 @@ class PostsController(
     fun updatePosts(@PathVariable seq: Long, @RequestBody postParamUpdateReq: PostsParam.UpdateReq): PostsEntity = postsService.updatePosts(postParamUpdateReq, seq)
 
     @DeleteMapping("/{seq}")
-    fun deletePosts(@PathVariable seq: Long, @RequestBody postParamDeleteReq: PostsParam.DeleteReq){
+    fun deletePosts(@PathVariable seq: Long, @RequestBody postParamDeleteReq: PostsParam.DeleteReq) {
         postsService.deletePosts(postParamDeleteReq, seq)
     }
 
