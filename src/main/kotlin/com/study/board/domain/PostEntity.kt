@@ -3,8 +3,8 @@ package com.study.board.domain
 import javax.persistence.*
 
 @Entity
-@Table(name = "posts")
-class PostsEntity(author: String, password: String, title: String, content: String) {
+@Table(name = "post")
+class PostEntity(author: String, password: String, title: String, content: String) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var seq: Long? = null
@@ -18,10 +18,14 @@ class PostsEntity(author: String, password: String, title: String, content: Stri
     var content: String = content
         protected set
 
+    @OneToMany(mappedBy = "post")
+    var comment: MutableList<CommentEntity> = mutableListOf()
+        protected set
+
     fun update(author: String, password: String, title: String, content: String) {
-       this.author = author
-       this.password = password
-       this.title = title
-       this.content = content
+        this.author = author
+        this.password = password
+        this.title = title
+        this.content = content
     }
 }

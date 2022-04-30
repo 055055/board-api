@@ -2,5 +2,5 @@ package com.study.board.domain
 
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface PostsRepository:JpaRepository<PostsEntity, Long> {
+interface PostRepository:JpaRepository<PostEntity, Long> {
 }

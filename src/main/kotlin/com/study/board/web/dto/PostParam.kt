@@ -2,7 +2,7 @@ package com.study.board.web.dto
 
 import javax.validation.constraints.NotBlank
 
-class PostsParam {
+class PostParam {
     data class SaveReq(
             @NotBlank val author: String,
             @NotBlank val password: String,
