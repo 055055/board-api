@@ -35,6 +35,7 @@ class PostParam {
         val author: String,
         val password: String,
         val title: String,
-        val content: String
+        val content: String,
+        val hits: Long,
     )
 }

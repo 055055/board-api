@@ -37,9 +37,10 @@ class PostServiceImpl(
         postRepository.delete(entity)
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     override fun findPost(seq: Long): PostParam.FindRes {
         val findById = postRepository.findById(seq).orElseThrow { IllegalAccessException("not found") }
-        return PostParam.FindRes(findById.seq!!, findById.author, findById.password, findById.title, findById.content)
+        return PostParam.FindRes(findById.seq!!, findById.author, findById.password, findById.title, findById
+            .content, findById.addHits())
     }
 }

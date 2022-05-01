@@ -4,7 +4,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "post")
-class PostEntity(author: String, password: String, title: String, content: String)
+class PostEntity(author: String, password: String, title: String, content: String, hits: Long = 0L)
     : BaseEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +18,8 @@ class PostEntity(author: String, password: String, title: String, content: Strin
         protected set
     var content: String = content
         protected set
+    var hits: Long = hits
+        protected set
 
     @OneToMany(mappedBy = "post")
     var comment: MutableList<CommentEntity> = mutableListOf()
@@ -29,4 +31,6 @@ class PostEntity(author: String, password: String, title: String, content: Strin
         this.title = title
         this.content = content
     }
+
+    fun addHits() = ++this.hits
 }
