@@ -22,6 +22,9 @@ group = "com.study"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
+object Version{
+    const val LOGGING = "2.1.21"
+}
 repositories {
     mavenCentral()
 }
@@ -34,6 +37,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("io.github.microutils:kotlin-logging:${Version.LOGGING}")
+
 
     runtimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
