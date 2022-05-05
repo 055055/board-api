@@ -4,8 +4,9 @@ import com.study.board.domain.PostEntity
 import com.study.board.web.dto.PostParam
 
 interface PostService {
-    fun savePost(postsParamSaveReq: PostParam.SaveReq):PostEntity
-    fun updatePost(postParamUpdateReq: PostParam.UpdateReq, seq: Long):PostEntity
+    fun savePost(postsParamSaveReq: PostParam.SaveReq): PostParam.SaveRes
+    fun updatePost(postParamUpdateReq: PostParam.UpdateReq, seq: Long): PostParam.UpdateRes
     fun deletePost(postParamDeleteReq: PostParam.DeleteReq, seq: Long)
-    fun findPost(seq: Long):PostParam.FindRes
+    fun getPost(seq: Long): PostParam.GetRes
+    fun getAllPosts(): List<PostEntity>
 }

@@ -4,8 +4,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "post")
-class PostEntity(author: String, password: String, title: String, content: String, hits: Long = 0L)
-    : BaseEntity() {
+class PostEntity(author: String, password: String, title: String, content: String, hits: Long = 0L) : BaseEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var seq: Long? = null

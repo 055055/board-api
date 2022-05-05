@@ -4,6 +4,7 @@ import com.study.board.domain.PostEntity
 import com.study.board.domain.PostRepository
 import com.study.board.helper.checkAuthorization
 import com.study.board.helper.encodePassword
+import com.study.board.web.dto.CommentParam
 import com.study.board.web.dto.PostParam
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -12,35 +13,79 @@ import org.springframework.transaction.annotation.Transactional
 class PostServiceImpl(
     private val postRepository: PostRepository
 ) : PostService {
-    override fun savePost(req: PostParam.SaveReq): PostEntity =
-        postRepository.save(
+    override fun savePost(request: PostParam.SaveReq): PostParam.SaveRes {
+        val postEntity = postRepository.save(
             PostEntity(
-                req.author,
-                encodePassword(req.password),
-                req.title,
-                req.content
+                author = request.author,
+                password = encodePassword(request.password),
+                title = request.title,
+                content = request.content
             )
         )
-
-    @Transactional
-    override fun updatePost(req: PostParam.UpdateReq, seq: Long): PostEntity {
-        val entity = postRepository.findById(seq).orElseThrow { IllegalAccessException("not found") }
-        checkAuthorization(entity.author, entity.password, req.author, req.password)
-        entity.update(req.author, req.password, req.title, req.content)
-        return entity
+        return PostParam.SaveRes(
+            seq = postEntity.seq!!,
+            author = postEntity.author,
+            title = postEntity.title,
+            content = postEntity.content,
+        )
     }
 
     @Transactional
-    override fun deletePost(req: PostParam.DeleteReq, seq: Long) {
+    override fun updatePost(request: PostParam.UpdateReq, seq: Long): PostParam.UpdateRes {
+        val postEntity = postRepository.findById(seq).orElseThrow { IllegalAccessException("not found") }
+        checkAuthorization(
+            originAuthor = postEntity.author,
+            originPassword = postEntity.password,
+            requestAuthor = request.author,
+            requestPassword = request.password
+        )
+
+        postEntity.update(
+            author = request.author,
+            password = request.password,
+            title = request.title,
+            content = request.content
+        )
+
+        return PostParam.UpdateRes(
+            seq = postEntity.seq!!,
+            author = postEntity.author,
+            title = postEntity.title,
+            content = postEntity.content,
+        )
+    }
+
+    @Transactional
+    override fun deletePost(request: PostParam.DeleteReq, seq: Long) {
         val entity = postRepository.findById(seq).orElseThrow { IllegalAccessException("not found") }
-        checkAuthorization(entity.author, entity.password, req.author, req.password)
+        checkAuthorization(
+            originAuthor = entity.author,
+            originPassword = entity.password,
+            requestAuthor = request.author,
+            requestPassword = request.password
+        )
         postRepository.delete(entity)
     }
 
     @Transactional
-    override fun findPost(seq: Long): PostParam.FindRes {
-        val findById = postRepository.findById(seq).orElseThrow { IllegalAccessException("not found") }
-        return PostParam.FindRes(findById.seq!!, findById.author, findById.password, findById.title, findById
-            .content, findById.addHits())
+    override fun getPost(seq: Long): PostParam.GetRes {
+        val postEntity = postRepository.findById(seq).orElseThrow { IllegalAccessException("not found") }
+        return PostParam.GetRes(
+            seq = postEntity.seq!!,
+            author = postEntity.author,
+            title = postEntity.title,
+            content = postEntity.content,
+            hits = postEntity.addHits(),
+            comments = postEntity.comment.map {
+                CommentParam.GetRes(
+                    seq = it.seq!!,
+                    author = it.author,
+                    content = it.content
+                )
+            }
+        )
     }
+
+    @Transactional(readOnly = true)
+    override fun getAllPosts(): List<PostEntity> = postRepository.findAll()
 }
