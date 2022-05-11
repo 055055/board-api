@@ -1,6 +1,6 @@
 package com.study.board.web
 
-import com.study.board.domain.PostEntity
+import com.study.board.domain.jpa.PostEntity
 import com.study.board.service.PostService
 import com.study.board.web.dto.PostParam
 import org.springframework.http.ResponseEntity

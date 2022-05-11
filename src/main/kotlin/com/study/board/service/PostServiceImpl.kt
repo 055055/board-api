@@ -1,7 +1,7 @@
 package com.study.board.service
 
-import com.study.board.domain.PostEntity
-import com.study.board.domain.PostRepository
+import com.study.board.domain.jpa.PostEntity
+import com.study.board.domain.jpa.PostRepository
 import com.study.board.helper.checkAuthorization
 import com.study.board.helper.encodePassword
 import com.study.board.web.dto.CommentParam
