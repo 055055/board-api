@@ -1,5 +1,6 @@
 package com.study.board.config
 
+import org.elasticsearch.client.ElasticsearchClient
 import org.elasticsearch.client.RestHighLevelClient
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.elasticsearch.client.ClientConfiguration
