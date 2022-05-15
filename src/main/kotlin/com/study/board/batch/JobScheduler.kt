@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 @Component
 class JobScheduler(
@@ -17,7 +18,7 @@ class JobScheduler(
 
     @Scheduled(cron = "*/5 * * * * *")
     fun runJob() {
-        val jobParameters = JobParameters(mutableMapOf("time" to JobParameter(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))))
+        val jobParameters = JobParameters(mutableMapOf("createdDateTimeParam" to JobParameter(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))))
         jobLauncher.run(boardJob.commentJob(), jobParameters)
     }
 }

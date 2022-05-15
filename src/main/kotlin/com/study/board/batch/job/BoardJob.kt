@@ -1,12 +1,16 @@
 package com.study.board.batch.job
 
-import com.study.board.domain.jpa.CommentEntity
+import com.study.board.domain.jpa.PostEntity
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory
+import org.springframework.batch.core.configuration.annotation.StepScope
 import org.springframework.batch.item.ItemWriter
 import org.springframework.batch.item.database.JpaPagingItemReader
+import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDateTime
 import javax.persistence.EntityManagerFactory
 
@@ -21,7 +25,7 @@ const val PAGE_SIZE = 1000
 class BoardJob(
     private val jobBuilderFactory: JobBuilderFactory,
     private val stepBuilderFactory: StepBuilderFactory,
-    private val entityManagerFactory: EntityManagerFactory
+    private val entityManagerFactory: EntityManagerFactory,
 ) {
 
     @Bean
@@ -33,29 +37,34 @@ class BoardJob(
     @Bean
     fun addDocumentStep() =
         stepBuilderFactory.get(ADD_DOCUMENT_STEP)
-            .chunk<CommentEntity, CommentEntity>(CHUNK_SIE)
-            .reader(readJpaPagingItem())
+            .chunk<PostEntity, PostEntity>(CHUNK_SIE)
+            .reader(readJpaPagingItem(null))
             .writer(writeItem())
             .build()
 
     @Bean
-    fun readJpaPagingItem(): JpaPagingItemReader<CommentEntity> {
+    @StepScope
+    fun readJpaPagingItem(
+        @Value("#{jobParameters[createdDateTimeParam]}") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") createdDateTimeParam: LocalDateTime?
+    ): JpaPagingItemReader<PostEntity> {
 
-        val jpaPagingItemReader = JpaPagingItemReader<CommentEntity>()
-        jpaPagingItemReader.setName(ITEM_READER_NAME)
-        jpaPagingItemReader.pageSize = PAGE_SIZE
-        jpaPagingItemReader.setEntityManagerFactory(entityManagerFactory)
-//        jpaPagingItemReader.setQueryString("SELECT c FROM Comment c WHERE c.createdDateTime >= :createdDateTime")
-        jpaPagingItemReader.setQueryString("SELECT c FROM CommentEntity c")
-//        jpaPagingItemReader.setParameterValues(mutableMapOf("createdDateTime" to LocalDateTime.now().minusMinutes(5)) as Map<String, Any>)
+        var createdDateTime = createdDateTimeParam?.minusMinutes(5) ?: LocalDateTime.now().minusMinutes(5)
 
-        return jpaPagingItemReader
+        return JpaPagingItemReaderBuilder<PostEntity>()
+            .name(ITEM_READER_NAME)
+            .pageSize(PAGE_SIZE)
+            .entityManagerFactory(entityManagerFactory)
+            .queryString("SELECT p FROM PostEntity p WHERE p.createdDateTime >= " +
+                ":createdDateTime ORDER BY p.seq desc")
+            .parameterValues(mapOf("createdDateTime" to createdDateTime) as Map<String, Any>)
+            .build()
     }
 
     @Bean
-    fun writeItem():ItemWriter<CommentEntity> = ItemWriter{
-        println("writer : $it")
+    fun writeItem(): ItemWriter<PostEntity> = ItemWriter {
+        println("writer : ${it.size}")
+        it.forEach {
+            println("it = ${it.content}")
+        }
     }
-
-
 }
