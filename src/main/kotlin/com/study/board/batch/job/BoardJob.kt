@@ -1,5 +1,6 @@
 package com.study.board.batch.job
 
+import com.study.board.domain.elasticsearch.BoardRepository
 import com.study.board.domain.jpa.PostEntity
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory
@@ -26,6 +27,7 @@ class BoardJob(
     private val jobBuilderFactory: JobBuilderFactory,
     private val stepBuilderFactory: StepBuilderFactory,
     private val entityManagerFactory: EntityManagerFactory,
+    private val boardRepository: BoardRepository,
 ) {
 
     @Bean
@@ -62,9 +64,6 @@ class BoardJob(
 
     @Bean
     fun writeItem(): ItemWriter<PostEntity> = ItemWriter {
-        println("writer : ${it.size}")
-        it.forEach {
-            println("it = ${it.content}")
-        }
+//        boardRepository.addDocument(it)
     }
 }
