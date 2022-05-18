@@ -1,6 +1,7 @@
 package com.study.board.domain.elasticsearch
 
 import com.study.board.config.logger
+import com.study.board.web.dto.SearchParam
 import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.search.SearchRequestBuilder
 import org.elasticsearch.action.search.SearchType
@@ -21,13 +22,19 @@ class SearchRepository(
     private val client: RestHighLevelClient
 ) {
 
-    fun search() {
+    fun search(searchParamReq: SearchParam.Req) {
 
         val searchSourceBuilder = SearchSourceBuilder()
         searchSourceBuilder.from(0)
-        searchSourceBuilder.size(10)
+        searchSourceBuilder.size(100)
         searchSourceBuilder.query(
-
+            boolQuery()
+                .must(
+                    matchQuery("content", searchParamReq.keyword)
+                )
+                .should(
+                    matchPhraseQuery("content", searchParamReq.keyword)
+                )
         )
         val searchRequest = SearchRequest(INDEX_NAME)
         searchRequest.source(searchSourceBuilder)

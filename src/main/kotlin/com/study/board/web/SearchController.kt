@@ -1,6 +1,7 @@
 package com.study.board.web
 
 import com.study.board.service.SearchService
+import com.study.board.web.dto.SearchParam
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -12,6 +13,7 @@ class SearchController(
 ) {
 
     @GetMapping
-    fun search() = searchService.search()
+    fun search(searchParamReq: SearchParam.Req) = searchService.search(searchParamReq)
+
 
 }
