@@ -7,6 +7,7 @@ import com.study.board.web.dto.SearchParam
 import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.SearchRequest
+import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.index.query.QueryBuilders.*
@@ -23,11 +24,12 @@ class BoardRepository(
     private val objectMapper: ObjectMapper,
 ) {
 
-    fun search(searchParamReq: SearchParam.Req) {
+    fun search(searchParamReq: SearchParam.Req): List<BoardDocument> {
+        val offset = searchParamReq.pageNumber * searchParamReq.totalElements
 
         val searchSourceBuilder = SearchSourceBuilder()
-        searchSourceBuilder.from(0)
-        searchSourceBuilder.size(100)
+        searchSourceBuilder.from(offset)
+        searchSourceBuilder.size(searchParamReq.totalElements)
         searchSourceBuilder.query(
             boolQuery()
                 .must(
@@ -39,8 +41,7 @@ class BoardRepository(
         )
         val searchRequest = SearchRequest(INDEX_NAME)
         searchRequest.source(searchSourceBuilder)
-
-        logger.info { client.search(searchRequest, RequestOptions.DEFAULT) }
+        return getBoardDocument(client.search(searchRequest, RequestOptions.DEFAULT))
     }
 
     fun bulkDocuments(boardDocuments: List<BoardDocument>) {
@@ -59,5 +60,12 @@ class BoardRepository(
 
         return objectMapper.convertValue(boardDocument,
             object : TypeReference<Map<String, Any>>() {})
+    }
+
+    private fun getBoardDocument(searchResponse: SearchResponse): List<BoardDocument> {
+        logger.info("searchResponse: $searchResponse")
+        return searchResponse.hits.hits.map {
+            objectMapper.convertValue(it.sourceAsMap, BoardDocument::class.java)
+        }
     }
 }

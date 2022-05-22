@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/v1/board")
 @RestController
 class BoardController(
-    private val searchService: BoardService
+    private val boardService: BoardService
 ) {
 
     @GetMapping("/search")
-    fun search(searchParamReq: SearchParam.Req) = searchService.search(searchParamReq)
+    fun search(searchParamReq: SearchParam.Req) = boardService.search(searchParamReq)
 }

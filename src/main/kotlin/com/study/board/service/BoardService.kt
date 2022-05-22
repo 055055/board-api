@@ -6,6 +6,6 @@ import com.study.board.web.dto.SearchParam
 
 interface BoardService {
 
-    fun search(searchParamReq: SearchParam.Req)
+    fun search(searchParamReq: SearchParam.Req): SearchParam.Res
     fun convertToDocument(postEntity: PostEntity): BoardDocument
 }

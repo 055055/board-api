@@ -7,10 +7,10 @@ data class BoardDocument(
     val content: String,
     val hits: Long,
     val comments: List<Comment>?,
-)
-
-data class Comment(
-    val seq: Long,
-    val author: String,
-    val content: String,
-)
+) {
+    data class Comment(
+        val seq: Long,
+        val author: String,
+        val content: String,
+    )
+}

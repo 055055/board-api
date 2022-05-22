@@ -5,8 +5,8 @@ Content-Type: application/json
 {
   "author": "test author",
   "password": "1234",
-  "title": "1게시판인가요?",
-  "content": "1이건 내용인가요?"
+  "title": "is this title?",
+  "content": "is this content??"
 }
 
 ###
@@ -40,6 +40,6 @@ Content-Type: application/json
 {
   "author": "comment author",
   "password": "456",
-  "postSeq": 2,
+  "postSeq": 1,
   "content": "2댓글입니당2"
 }
