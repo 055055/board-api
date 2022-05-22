@@ -5,12 +5,12 @@ Content-Type: application/json
 {
   "author": "test author",
   "password": "1234",
-  "title": "게시판인가요?",
-  "content": "이건 내용인가요?"
+  "title": "1게시판인가요?",
+  "content": "1이건 내용인가요?"
 }
 
 ###
-GET http://localhost:8080/v1/posts/1
+GET http://localhost:8080/v1/posts/2
 
 ###
 DELETE http://localhost:8080/v1/posts/1
@@ -40,6 +40,6 @@ Content-Type: application/json
 {
   "author": "comment author",
   "password": "456",
-  "postSeq": 1,
-  "content": "댓글입니당1"
+  "postSeq": 2,
+  "content": "2댓글입니당2"
 }

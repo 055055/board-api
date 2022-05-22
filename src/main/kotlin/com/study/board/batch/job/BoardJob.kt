@@ -1,10 +1,13 @@
 package com.study.board.batch.job
 
+import com.study.board.domain.elasticsearch.BoardDocument
 import com.study.board.domain.elasticsearch.BoardRepository
 import com.study.board.domain.jpa.PostEntity
+import com.study.board.service.BoardService
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepScope
+import org.springframework.batch.item.ItemProcessor
 import org.springframework.batch.item.ItemWriter
 import org.springframework.batch.item.database.JpaPagingItemReader
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder
@@ -28,6 +31,7 @@ class BoardJob(
     private val stepBuilderFactory: StepBuilderFactory,
     private val entityManagerFactory: EntityManagerFactory,
     private val boardRepository: BoardRepository,
+    private val boardService: BoardService,
 ) {
 
     @Bean
@@ -39,8 +43,9 @@ class BoardJob(
     @Bean
     fun addDocumentStep() =
         stepBuilderFactory.get(ADD_DOCUMENT_STEP)
-            .chunk<PostEntity, PostEntity>(CHUNK_SIE)
+            .chunk<PostEntity, BoardDocument>(CHUNK_SIE)
             .reader(readJpaPagingItem(null))
+            .processor(processItem())
             .writer(writeItem())
             .build()
 
@@ -62,8 +67,13 @@ class BoardJob(
             .build()
     }
 
+   @Bean
+   fun processItem(): ItemProcessor<PostEntity, BoardDocument> = ItemProcessor {
+       boardService.convertToDocument(it)
+   }
+
     @Bean
-    fun writeItem(): ItemWriter<PostEntity> = ItemWriter {
-//        boardRepository.addDocument(it)
+    fun writeItem(): ItemWriter<BoardDocument> = ItemWriter {
+        boardRepository.bulkDocuments(it)
     }
 }

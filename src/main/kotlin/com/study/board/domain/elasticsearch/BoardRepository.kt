@@ -9,11 +9,9 @@ import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.client.RequestOptions
 import org.elasticsearch.client.RestHighLevelClient
-import org.elasticsearch.common.xcontent.XContentType
 import org.elasticsearch.index.query.QueryBuilders.*
 import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.springframework.stereotype.Repository
-import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 
 private const val INDEX_NAME = "board"
@@ -45,17 +43,21 @@ class BoardRepository(
         logger.info { client.search(searchRequest, RequestOptions.DEFAULT) }
     }
 
-    fun bulkDocuments(boardDocuments: List<BoardDocument>){
+    fun bulkDocuments(boardDocuments: List<BoardDocument>) {
+        logger.info("boardDocument: $boardDocuments")
         val bulkRequest = BulkRequest()
         boardDocuments.forEach {
             val indexRequest = IndexRequest(INDEX_NAME)
             indexRequest.source(getBoardMap(it))
-            bulkRequest.add(IndexRequest(INDEX_NAME).source(XContentType.JSON)
-            )
+            bulkRequest.add(indexRequest)
         }
 
         client.bulk(bulkRequest, RequestOptions.DEFAULT)
     }
 
-    private fun getBoardMap(boardDocument: BoardDocument) = objectMapper.convertValue(boardDocument, Map::class.java)
+    private fun getBoardMap(boardDocument: BoardDocument): Map<String, Any> {
+
+        return objectMapper.convertValue(boardDocument,
+            object : TypeReference<Map<String, Any>>() {})
+    }
 }

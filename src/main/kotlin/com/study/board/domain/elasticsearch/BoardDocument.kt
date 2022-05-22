@@ -6,7 +6,7 @@ data class BoardDocument(
     val title: String,
     val content: String,
     val hits: Long,
-    val comments: List<Comment>,
+    val comments: List<Comment>?,
 )
 
 data class Comment(
