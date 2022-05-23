@@ -7,10 +7,14 @@ import com.study.board.web.dto.SearchParam
 import org.springframework.stereotype.Service
 import kotlin.streams.toList
 
+
 @Service
 class BoardServiceImpl(
-    private val boardRepository: BoardRepository
+    private val boardRepository: BoardRepository,
 ) : BoardService {
+
+    private val searchPostUrl: String = "http://localhost:8080/v1/posts/"
+
     override fun search(searchParamReq: SearchParam.Req): SearchParam.Res {
         val searchResponse = boardRepository.search(searchParamReq)
             .stream().map {
@@ -19,7 +23,7 @@ class BoardServiceImpl(
                     author = it.author,
                     title = it.title,
                     content = it.content,
-                    url = "http://localhost:8080/v1/posts/${it.seq}"
+                    url = "$searchPostUrl${it.seq}"
                 )
             }.toList()
 
@@ -31,14 +35,14 @@ class BoardServiceImpl(
     }
 
     override fun convertToDocument(postEntity: PostEntity): BoardDocument =
-        postEntity?.let { post ->
+        postEntity.let { post ->
             BoardDocument(
                 seq = post.seq!!,
                 author = post.author,
                 title = post.title,
                 content = post.content,
                 hits = post.hits,
-                comments = post.comment?.map {
+                comments = post.comment.map {
                     BoardDocument.Comment(
                         seq = it.seq!!,
                         content = it.content,
