@@ -4,6 +4,7 @@ import com.study.board.domain.elasticsearch.BoardDocument
 import com.study.board.domain.elasticsearch.BoardRepository
 import com.study.board.domain.jpa.PostEntity
 import com.study.board.web.dto.SearchParam
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import kotlin.streams.toList
 
@@ -11,9 +12,12 @@ import kotlin.streams.toList
 @Service
 class BoardServiceImpl(
     private val boardRepository: BoardRepository,
+   @Value("\${app.url}") private val appUrl:String
 ) : BoardService {
 
-    private val searchPostUrl: String = "http://localhost:8080/v1/posts/"
+    val searchPostUrl: String by lazy {
+        "$appUrl/v1/posts/"
+    }
 
     override fun search(searchParamReq: SearchParam.Req): SearchParam.Res {
         val searchResponse = boardRepository.search(searchParamReq)
