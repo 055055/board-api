@@ -1,4 +1,4 @@
-package com.study.board.config
+package com.study.board.config.elasticsearch
 
 import org.elasticsearch.client.ElasticsearchClient
 import org.elasticsearch.client.RestHighLevelClient
