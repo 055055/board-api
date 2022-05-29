@@ -42,6 +42,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("io.github.microutils:kotlin-logging:${Version.LOGGING}")
 
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
 
     runtimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
