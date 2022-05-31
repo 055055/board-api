@@ -35,7 +35,7 @@ class BoardJob(
 ) {
 
     @Bean
-    fun commentJob() =
+    fun boardJob() =
         jobBuilderFactory.get(BOARD_INDEX_NAME)
             .start(addDocumentStep())
             .build()

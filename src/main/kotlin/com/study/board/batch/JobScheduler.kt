@@ -18,6 +18,6 @@ class JobScheduler(
     @Scheduled(cron = "0 */5 * * * *")
     fun runJob() {
         val jobParameters = JobParameters(mutableMapOf("createdDateTimeParam" to JobParameter(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))))
-        jobLauncher.run(boardJob.commentJob(), jobParameters)
+        jobLauncher.run(boardJob.boardJob(), jobParameters)
     }
 }

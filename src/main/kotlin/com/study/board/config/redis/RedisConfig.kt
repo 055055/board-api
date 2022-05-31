@@ -16,10 +16,8 @@ class RedisConfig(
 ) {
 
     @Bean
-    fun redisConnectionFactory(): RedisConnectionFactory {
-        return LettuceConnectionFactory(
-            RedisStandaloneConfiguration("localhost", 6379))
-    }
+    fun redisConnectionFactory(): RedisConnectionFactory =
+        LettuceConnectionFactory(RedisStandaloneConfiguration("localhost", 6379))
 
     @Bean(name = ["redisTemplate"])
     fun restTemplate(): RedisTemplate<String, Any> {

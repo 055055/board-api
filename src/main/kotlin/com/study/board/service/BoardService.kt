@@ -8,4 +8,5 @@ interface BoardService {
 
     fun search(searchParamReq: SearchParam.Req): SearchParam.Res
     fun convertToDocument(postEntity: PostEntity): BoardDocument
+    fun getWeeklyPopularPosts()
 }

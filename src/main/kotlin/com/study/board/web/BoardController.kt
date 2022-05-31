@@ -14,4 +14,7 @@ class BoardController(
 
     @GetMapping("/search")
     fun search(searchParamReq: SearchParam.Req) = boardService.search(searchParamReq)
+
+    @GetMapping("/weekly")
+    fun getWeeklyPopularPosts() = boardService.getWeeklyPopularPosts()
 }

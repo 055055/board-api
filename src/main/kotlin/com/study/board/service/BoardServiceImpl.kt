@@ -3,6 +3,7 @@ package com.study.board.service
 import com.study.board.domain.elasticsearch.BoardDocument
 import com.study.board.domain.elasticsearch.BoardRepository
 import com.study.board.domain.jpa.PostEntity
+import com.study.board.domain.redis.RedisRepository
 import com.study.board.web.dto.SearchParam
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -12,7 +13,8 @@ import kotlin.streams.toList
 @Service
 class BoardServiceImpl(
     private val boardRepository: BoardRepository,
-   @Value("\${app.url}") private val appUrl:String
+    private val redisRepository: RedisRepository,
+    @Value("\${app.url}") private val appUrl: String
 ) : BoardService {
 
     val searchPostUrl: String by lazy {
@@ -55,4 +57,11 @@ class BoardServiceImpl(
                 }
             )
         }
+
+    override fun getWeeklyPopularPosts() {
+        val key = "weekly"
+        val findByKey = redisRepository.findByKey(key, String::class.java)
+
+
+    }
 }
