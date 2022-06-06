@@ -26,7 +26,7 @@ const val CHUNK_SIE = 1000
 const val PAGE_SIZE = 1000
 
 @Configuration
-class BoardJob(
+class BoardJobConfig(
     private val jobBuilderFactory: JobBuilderFactory,
     private val stepBuilderFactory: StepBuilderFactory,
     private val entityManagerFactory: EntityManagerFactory,

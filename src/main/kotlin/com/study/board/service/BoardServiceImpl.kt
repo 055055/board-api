@@ -48,13 +48,17 @@ class BoardServiceImpl(
                 title = post.title,
                 content = post.content,
                 hits = post.hits,
-                comments = post.comment.map {
+                comments = post.comment.map { comment ->
                     BoardDocument.Comment(
-                        seq = it.seq!!,
-                        content = it.content,
-                        author = it.author
+                        seq = comment.seq!!,
+                        content = comment.content,
+                        author = comment.author,
+                        createdDateTime = comment.createdDateTime,
+                        modifiedDateTime = comment.modifiedDateTime
                     )
-                }
+                },
+                createdDateTime = post.createdDateTime,
+                modifiedDateTime = post.modifiedDateTime
             )
         }
 
@@ -62,6 +66,8 @@ class BoardServiceImpl(
         val key = "weekly"
         val findByKey = redisRepository.findByKey(key, String::class.java)
 
+    }
 
+    private fun getPopularPosts() {
     }
 }
