@@ -12,10 +12,10 @@ import javax.persistence.MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
 class BaseEntity {
     @CreatedDate
-    var createdDateTime: LocalDateTime? = null
+    var createdDateTime: LocalDateTime = LocalDateTime.MIN
     protected set
 
     @LastModifiedDate
-    var modifiedDateTime: LocalDateTime? = null
+    var modifiedDateTime: LocalDateTime = LocalDateTime.MIN
     protected set
 }
