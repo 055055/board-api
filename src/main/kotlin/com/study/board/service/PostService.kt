@@ -9,4 +9,5 @@ interface PostService {
     fun deletePost(postParamDeleteReq: PostParam.DeleteReq, seq: Long)
     fun getPost(seq: Long): PostParam.GetRes
     fun getAllPosts(): List<PostEntity>
+    fun getWeeklyPopularPosts():List<PostEntity>
 }

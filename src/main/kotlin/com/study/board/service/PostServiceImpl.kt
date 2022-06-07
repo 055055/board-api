@@ -88,4 +88,9 @@ class PostServiceImpl(
 
     @Transactional(readOnly = true)
     override fun getAllPosts(): List<PostEntity> = postRepository.findAll()
+
+    @Transactional
+    override fun getWeeklyPopularPosts(): List<PostEntity> =
+        postRepository.findWeeklyPopularPosts().orElseThrow { IllegalAccessException("not found") }
+
 }
