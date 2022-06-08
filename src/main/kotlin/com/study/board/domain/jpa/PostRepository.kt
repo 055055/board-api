@@ -1,5 +1,6 @@
 package com.study.board.domain.jpa
 
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
@@ -17,7 +18,8 @@ interface PostRepository : JpaRepository<PostEntity, Long> {
             ORDER BY p.hits DESC
         """)
     fun findWeeklyPopularPosts(
+        pageable:Pageable,
         @Param("startDateTime") startDateTime: LocalDateTime = LocalDateTime.now().minusDays(weeklyPopularPostsPeriod),
         @Param("endDateTime") endDateTime: LocalDateTime = LocalDateTime.now()
-    ): Optional<List<PostEntity>>
+    ): List<PostEntity>
 }

@@ -6,6 +6,7 @@ import com.study.board.helper.checkAuthorization
 import com.study.board.helper.encodePassword
 import com.study.board.web.dto.CommentParam
 import com.study.board.web.dto.PostParam
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -91,6 +92,5 @@ class PostServiceImpl(
 
     @Transactional
     override fun getWeeklyPopularPosts(): List<PostEntity> =
-        postRepository.findWeeklyPopularPosts().orElseThrow { IllegalAccessException("not found") }
-
+        postRepository.findWeeklyPopularPosts(PageRequest.of(0, 10))
 }
